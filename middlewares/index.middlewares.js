@@ -3,6 +3,6 @@ import { verifyToken } from "./token.middlewares.js";
 
 const middleware = Router();
 
-middleware.use("/producto", verifyToken);
+middleware.use("/game", verifyToken);
 
 export default middleware;
