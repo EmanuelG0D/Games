@@ -36,7 +36,7 @@ export const getGamesById = async (req, res) => {
     }
 }
 
-export const getGamedByName = async(req,res) =>{
+export const getGamesByName = async(req,res) =>{
     try{
         //let {nombre de video juego} = req.params;
         let data = await null;
@@ -115,7 +115,7 @@ export const deleteGames = async(req, res) =>{
 export default{
     getGames,
     getGamesById,
-    getGamedByName,
+    getGamesByName,
     postGames,
     putGames,
     deleteGames
