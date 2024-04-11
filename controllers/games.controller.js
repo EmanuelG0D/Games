@@ -1,4 +1,3 @@
-import { sign } from "jsonwebtoken";
 
 
 export const getGames = async (req, res) => {
