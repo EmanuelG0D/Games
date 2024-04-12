@@ -15,7 +15,7 @@ export async function getGamesByIdModel(id){
     try{
         const pg = new pgService();
         return await pg.connection.oneOrNone(
-            `SELECT * FROM GAMES WHERE ID_GAMES = $1`,
+            `SELECT * FROM GAMES WHERE ID = $1`,
             [id]
     )
     }catch (error){
@@ -60,7 +60,7 @@ export const putGamesModel = async (id, NAME, DETAIL, VALUE) => {
                 SET DETAIL = $3,
                 NAME=$2, 
                 VALUE=$4
-                WHERE ID_GAMES = $1
+                WHERE ID = $1
             RETURNING *`,
             [id, NAME, DETAIL, VALUE]
         )
@@ -72,7 +72,7 @@ export const deleteGamesModel = async (id) => {
     try {
         const pg = new pgService();
         return await pg.connection.query(
-            `DELETE FROM GAMES WHERE ID_GAMES = $1 RETURNING *`,
+            `DELETE FROM GAMES WHERE ID = $1 RETURNING *`,
             [id]
         );
     } catch (error) {
@@ -84,10 +84,10 @@ export const deleteGamesModel = async (id) => {
 export const GamesNameAlreadyExists = async (id, GamesName) => {
     try {
         const pg = new pgService();
-        return await pg.connection.none(
+        return await pg.connection.oneOrNone(
             `
             SELECT * FROM GAMES
-            WHERE LOWER(NAME) = LOWER($1) AND ID <> $2
+            WHERE LOWER(NAME) = LOWER($2) AND ID <> $1
             `,
             [id, GamesName]
         );
@@ -100,7 +100,7 @@ export const GamesNameAlreadyExists = async (id, GamesName) => {
 export const getGamesByNameUnique = async (GamesName) =>{
     try {
         const pg = new pgService();
-        return await pg.connection.query(
+        return await pg.connection.oneOrNone(
             //sirve para seleccionar todas las filas de una tabla llamada "GAMES" donde el valor del campo "NAME" 
             //contenga parcialmente una cadena proporcionada, sin importar las mayúsculas o minúsculas.
             `SELECT * FROM GAMES WHERE LOWER(NAME) = LOWER($1)`, 

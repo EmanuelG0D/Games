@@ -27,7 +27,7 @@ export const getGamesByNameValidator = checkSchema({
 
 // Validador para la creación de un nuevo juego
 export const postGamesValidator = checkSchema({
-    NAME: {
+    name: {
         in: ['body'],
         trim: true,
         isLength: {
@@ -51,7 +51,7 @@ export const postGamesValidator = checkSchema({
             }
         }
     },
-    DETAIL: {
+    detail: {
         in: ['body'],
         trim: true,
         isLength: {
@@ -72,7 +72,7 @@ export const postGamesValidator = checkSchema({
         }
     },
     
-    VALUE: {
+    value: {
         in: ['body'],
         isFloat: {
             errorMessage: 'El valor del juego debe ser un valor positivo',
@@ -106,7 +106,7 @@ export const putGamesValidator = checkSchema({
         },
         notEmpty: true
     },
-    NAME: {
+    name: {
         in: ['body'],
         trim: true,
         isLength: {
@@ -118,11 +118,11 @@ export const putGamesValidator = checkSchema({
             options: { max: 100 }
         },
         custom: {
-            options: async (value) => {
+            options: async (value, {req}) => {
                 if (!value) {
                     throw new Error('El nombre del juego no puede estar vacío');
                 }
-                const game = await GamesNameAlreadyExists(value);
+                const game = await GamesNameAlreadyExists(req.query.id,value);
                 if (game) {
                     throw new Error('Ya existe un juego con este nombre');
                 }
@@ -130,7 +130,7 @@ export const putGamesValidator = checkSchema({
             }
         }
     },
-    DETAIL: {
+    detail: {
         in: ['body'],
         trim: true,
         isLength: {
@@ -151,7 +151,7 @@ export const putGamesValidator = checkSchema({
         }
     },
     
-    VALUE: {
+    value: {
         in: ['body'],
         isFloat: {
             errorMessage: 'El valor del juego debe ser un valor positivo',

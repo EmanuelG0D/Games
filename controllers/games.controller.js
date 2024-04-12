@@ -60,8 +60,8 @@ export const getGamesByName = async(req,res) =>{
 
 export const postGames = async (req, res) =>{
     try{
-        let {NAME, DETAIL, VALUE} = req.body;
-        let data = await postGamesModel(NAME, DETAIL, VALUE);
+        let {name, detail, value} = req.body;
+        let data = await postGamesModel(name, detail, value);
         res.status(201).json({
             succes: true,
             data: data
@@ -77,9 +77,9 @@ export const postGames = async (req, res) =>{
 
 export const putGames = async(req, res) =>{
     try{
-        let {NAME, DETAIL, VALUE} = req.body;
-        let{id} = req.params
-        let data = await putGamesModel(id, NAME, DETAIL, VALUE);
+        let {name, detail, value} = req.body;
+        let{id} = req.params;
+        let data = await putGamesModel(id, name, detail, value);
         res.status(200).json({
             succes: true,
             data: data
@@ -92,8 +92,6 @@ export const putGames = async(req, res) =>{
         });
     }
 
-    
-    res.status(200).json({msg: 'Esto es un put', data: data});
 }
 
 export const deleteGames = async(req, res) =>{
