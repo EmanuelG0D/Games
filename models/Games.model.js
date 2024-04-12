@@ -14,7 +14,7 @@ export const getGamesModel = async() => {
 export async function getGamesByIdModel(id){
     try{
         const pg = new pgService();
-        return await pg.connection.one(
+        return await pg.connection.oneOrNone(
             `SELECT * FROM GAMES WHERE ID_GAMES = $1`,
             [id]
     )
@@ -28,7 +28,7 @@ export async function getGamesByIdModel(id){
 export async function getGamesByNameModel(GamesName) {
     try {
         const pg = new pgService();
-        return await pg.connection.oneOrNone(
+        return await pg.connection.query(
             //sirve para seleccionar todas las filas de una tabla llamada "GAMES" donde el valor del campo "NAME" 
             //contenga parcialmente una cadena proporcionada, sin importar las mayúsculas o minúsculas.
             `SELECT * FROM GAMES WHERE LOWER(NAME) LIKE LOWER('%'||$1||'%')`, 
@@ -93,5 +93,20 @@ export const GamesNameAlreadyExists = async (id, GamesName) => {
         );
     } catch (error) {
         return "Esto es un error";
+    }
+}
+
+
+export const getGamesByNameUnique = async (GamesName) =>{
+    try {
+        const pg = new pgService();
+        return await pg.connection.query(
+            //sirve para seleccionar todas las filas de una tabla llamada "GAMES" donde el valor del campo "NAME" 
+            //contenga parcialmente una cadena proporcionada, sin importar las mayúsculas o minúsculas.
+            `SELECT * FROM GAMES WHERE LOWER(NAME) = LOWER($1)`, 
+            [GamesName]
+        );
+    } catch (error) {
+        return 'Esto es un error';
     }
 }

@@ -1,8 +1,9 @@
+import { deleteGamesModel, getGamesByIdModel, getGamesByNameModel, getGamesModel, postGamesModel, putGamesModel } from "../models/Games.model.js";
 
 
 export const getGames = async (req, res) => {
     try{
-        let data = await null;
+        let data = await getGamesModel();
         res.status(200).json({
             succes: true,
             data: data
@@ -19,7 +20,7 @@ export const getGames = async (req, res) => {
 export const getGamesById = async (req, res) => {
     try{
     let{id} = req.params;
-    let data = await null;
+    let data = await getGamesByIdModel(id);
     if(!data){
         throw new Error("Juego no encontrado")
     }
@@ -38,8 +39,8 @@ export const getGamesById = async (req, res) => {
 
 export const getGamesByName = async(req,res) =>{
     try{
-        //let {nombre de video juego} = req.params;
-        let data = await null;
+        let {GamesName} = req.params;
+        let data = await getGamesByNameModel(GamesName);
         if(!data){
             throw new Error("Juego no encontrado")
         }
@@ -59,8 +60,8 @@ export const getGamesByName = async(req,res) =>{
 
 export const postGames = async (req, res) =>{
     try{
-        //let {nombres base de datos} = req.body;
-        let data = await null;
+        let {NAME, DETAIL, VALUE} = req.body;
+        let data = await postGamesModel(NAME, DETAIL, VALUE);
         res.status(201).json({
             succes: true,
             data: data
@@ -76,9 +77,9 @@ export const postGames = async (req, res) =>{
 
 export const putGames = async(req, res) =>{
     try{
-        //let {nombres base de datos} = req.body;
+        let {NAME, DETAIL, VALUE} = req.body;
         let{id} = req.params
-        let data = await null;
+        let data = await putGamesModel(id, NAME, DETAIL, VALUE);
         res.status(200).json({
             succes: true,
             data: data
@@ -98,7 +99,7 @@ export const putGames = async(req, res) =>{
 export const deleteGames = async(req, res) =>{
     try{
         let {id} = req.params;
-        let data = await null;
+        let data = await deleteGamesModel(id);
         res.status(200).json({
             succes: true,
             data: data

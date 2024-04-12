@@ -1,5 +1,5 @@
 import {checkSchema} from "express-validator";
-import { getGamesByNameModel, GamesNameAlreadyExists } from '../models/Games.model.js'; 
+import { getGamesByNameModel, GamesNameAlreadyExists, getGamesByNameUnique } from '../models/Games.model.js'; 
 
 
 // Validador para el ID
@@ -43,7 +43,7 @@ export const postGamesValidator = checkSchema({
                 if (!value) {
                     throw new Error('El nombre del juego no puede estar vacío');
                 }
-                const game = await getGamesByNameModel(value);
+                const game = await getGamesByNameUnique(value);
                 if (game) {
                     throw new Error('Ya existe un juego con este nombre');
                 }
@@ -173,3 +173,4 @@ export const putGamesValidator = checkSchema({
         }
     }
 });
+
