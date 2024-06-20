@@ -4,9 +4,10 @@ import { generateToken } from "../services/token.service.js";
 
 export const login = async (req, res)=>{
     try{
-        let {username, password} = req.query;
 
-        let data = await getUsuario(username, password);
+        let {username, password} = req.body;
+        let data = await getUsuario(username, password, res);
+
         if(!data){
             throw new Error("Los datos son incorrectos");
         } 
@@ -16,14 +17,13 @@ export const login = async (req, res)=>{
             token: generateToken(data),
             msn: 'Logeado correctamente'
         });
-    }catch(error){
-        console.log(error.Error);
+
+    }catch(error){        
         res.status(401).json({
             succes: false,
             token: '',
             msn: error.message
         });
     }
-
     
 }

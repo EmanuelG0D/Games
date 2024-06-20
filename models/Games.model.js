@@ -2,16 +2,22 @@ import pgService from "../services/pg.service.js"
 
 
 //traerlos todos
-export const getGamesModel = async() => {
-    const pg = new pgService();
-    return await pg.connection.query(
-        `SELECT * FROM GAMES`
-    );
-    
+export const getGamesModel = async(res) => {
+    try{
+        const pg = new pgService();
+        return await pg.connection.query(
+            `SELECT * FROM GAMES`
+        );
+    }catch(error){
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        }); 
+    }    
 }
 
 //buscar por ID
-export async function getGamesByIdModel(id){
+export async function getGamesByIdModel(id, res){
     try{
         const pg = new pgService();
         return await pg.connection.oneOrNone(
@@ -19,13 +25,16 @@ export async function getGamesByIdModel(id){
             [id]
     )
     }catch (error){
-        return 'Esto es un error'
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
     }
     
 }
 
 //buscar por nombre
-export async function getGamesByNameModel(GamesName) {
+export async function getGamesByNameModel(GamesName, res) {
     try {
         const pg = new pgService();
         return await pg.connection.query(
@@ -35,25 +44,36 @@ export async function getGamesByNameModel(GamesName) {
             [GamesName]
         );
     } catch (error) {
-        return 'Esto es un error';
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
     }
 }
 
 
 //guardar 
-export const postGamesModel = async (NAME, DETAIL, VALUE) => {
+export const postGamesModel = async (NAME, DETAIL, VALUE, IMG, res) => {
+    try {
     const pg = new pgService();
         return await pg.connection.oneOrNone(
-            `INSERT INTO GAMES (NAME, DETAIL, VALUE)
+            `INSERT INTO GAMES (NAME, DETAIL, VALUE, IMG)
             VALUES
-            ($1, $2, $3) RETURNING *`,
-            [NAME, DETAIL, VALUE]
-        )
+            ($1, $2, $3, $4) RETURNING *`,
+            [NAME, DETAIL, VALUE, IMG]
+        );
+    } catch (error) {
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
+    }
 }
 
 
 //actualizar 
-export const putGamesModel = async (id, NAME, DETAIL, VALUE) => {
+export const putGamesModel = async (id, NAME, DETAIL, VALUE, IMG, res) => {
+    try {
     const pg = new pgService();
         return await pg.connection.query(
             `UPDATE GAMES
@@ -64,11 +84,17 @@ export const putGamesModel = async (id, NAME, DETAIL, VALUE) => {
             RETURNING *`,
             [id, NAME, DETAIL, VALUE]
         )
+    } catch (error) {
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
+    }
 }
 
 
 //eliminar
-export const deleteGamesModel = async (id) => {
+export const deleteGamesModel = async (id, res) => {
     try {
         const pg = new pgService();
         return await pg.connection.query(
@@ -76,7 +102,10 @@ export const deleteGamesModel = async (id) => {
             [id]
         );
     } catch (error) {
-        return 'Esto es un error';
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
     }
 }
 
@@ -92,7 +121,10 @@ export const GamesNameAlreadyExists = async (id, GamesName) => {
             [id, GamesName]
         );
     } catch (error) {
-        return "Esto es un error";
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
     }
 }
 
@@ -107,6 +139,9 @@ export const getGamesByNameUnique = async (GamesName) =>{
             [GamesName]
         );
     } catch (error) {
-        return 'Esto es un error';
+        res.status(503).json({
+            succes: false,
+            msn: 'No se puede acceder temporalmente'
+        });
     }
 }

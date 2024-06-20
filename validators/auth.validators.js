@@ -3,14 +3,14 @@ import { checkSchema } from "express-validator";
 // tambien (no estar vacíos y no tener espacios adicionales)
 export const loginValidator = checkSchema({
     username: {
-        in:['query'],
+        in:['body'],
         trim:true,
         notEmpty:{
             errorMessage: 'Username is requierd'
         }
     },
     password: {
-        in:['query'],
+        in:['body'],
         trim:true,
         notEmpty:{
             errorMessage: 'Password is required'

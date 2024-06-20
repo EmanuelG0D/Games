@@ -5,6 +5,6 @@ import { loginValidator } from "../validators/auth.validators.js";
 
 const authRouter = Router();
 
-authRouter.get("/", validate(loginValidator),login);
+authRouter.post("/", validate(loginValidator),login);
 
 export default authRouter;
